@@ -1,0 +1,59 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  user_name String
+  email     String    @unique
+  password  String?
+  googleId  String?   @unique
+  invoices  Invoice[]
+  printLayout String?   @default("1")
+  createdAt DateTime  @default(now())
+  
+  @@map("users")
+}
+
+model Invoice {
+  id Int @id @default(autoincrement())
+
+  uid String? @unique @default(uuid())
+
+  customer    String
+  date        DateTime? @default(now())
+  subtotal    Float
+  total       Float
+  discount    Float?
+  due         Float?
+  received    Float
+  paymentType String
+  description String?
+  userId      Int
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  items     Item[]
+  createdAt DateTime @default(now())
+}
+
+model Item {
+  id        Int    @id @default(autoincrement())
+  item_name String
+  quantity  Int
+  unit      String
+  price     Float
+
+  invoiceId Int
+  invoice   Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+}
+// npx prisma migrate dev --name add_print_layout_to_user
