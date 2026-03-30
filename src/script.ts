@@ -9,7 +9,7 @@ import passport from "./config/passport";
 import session from "express-session";
 import { protect } from "./utils/Middleware/Middleware";
 import { singleInvoice, userInvoice } from "./Controller/Invoice/invoiceController";
-import { PrintFind, printOption, printSelect } from "./Controller/PrintSettings/PrintSettingsController";
+import {  printSelect } from "./Controller/PrintSettings/PrintSettingsController";
 
 type TypedRequest<T> = Request<{}, {}, T>;
 
@@ -125,17 +125,15 @@ app.get("/profile", protect, getProfile);
 
 
 //userInvoice
-app.get("/api/invoice/:userId", userInvoice);
+// app.get("/api/invoice/:userId", userInvoice);
+app.get("/api/invoice", userInvoice);
 app.get("/api/invoice/:id",singleInvoice);
 
 
-
 // print settings
-app.post("/api/print-settings", printOption);
-app.get("/api/print-settings", PrintFind);
+// app.post("/api/print-settings", printOption);
+// app.get("/api/print-settings", PrintFind);
 app.patch("/api/print-settings", printSelect);
-
-
 
 
 

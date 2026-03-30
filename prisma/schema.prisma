@@ -13,15 +13,17 @@ datasource db {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  user_name String
-  email     String    @unique
-  password  String?
-  googleId  String?   @unique
-  invoices  Invoice[]
+  id          Int       @id @default(autoincrement())
+  user_name   String
+  email       String    @unique
+  password    String?
+  googleId    String?   @unique
+  invoices    Invoice[]
   printLayout String?   @default("1")
-  createdAt DateTime  @default(now())
-  
+  address     String?
+  phone       String?
+  createdAt   DateTime  @default(now())
+
   @@map("users")
 }
 
@@ -56,4 +58,3 @@ model Item {
   invoiceId Int
   invoice   Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
 }
-// npx prisma migrate dev --name add_print_layout_to_user

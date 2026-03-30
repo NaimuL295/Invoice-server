@@ -1,45 +1,48 @@
 import { Response, Request } from "express";
 import { prisma } from "../../lib/prisma";
 
-export const userInvoice = async (req: Request, res: Response) => {
+
+export const userInvoice = async (req: any, res: Response) => {
   try {
-    const { userId } = req.params;
-    if (!userId) {
-      return res.status(400).json({ message: "User ID required" });
+   const userId = Number(req.query.userId); 
+
+    if (!userId || isNaN(userId)) {
+      return res.status(400).json({ message: "Valid User ID required" });
     }
-    const userIdNumber = Number(userId);
-    if (isNaN(userIdNumber)) {
-      return res.status(400).json({ message: "Invalid User ID format" });
-    }
+
     const invoices = await prisma.invoice.findMany({
-      where: { userId: userIdNumber },
-      orderBy: {
-        id: "desc",
-      },
+      where: { userId },
+      orderBy: { id: "desc" },
+      include:{
+        user:true,
+       items:true,
+      }
     });
 
-    res
-      .status(200)
-      .json({ message: "Invoice fetched successfully", data: invoices });
+    return res.status(200).json({
+      message: "Invoice fetched successfully",
+      data: invoices,
+    });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Something went wrong" });
+    return res.status(500).json({ message: "Something went wrong" });
   }
 };
 
-export const singleInvoice = async (req: Request, res: Response) => {
+export const singleInvoice = async (req: any, res: Response) => {
   try {
     const { id } = req.params;
     const idNumber = Number(id);
 
-    //  invalid id check
     if (isNaN(idNumber)) {
       return res.status(400).json({ message: "Invalid ID format" });
     }
+  //  const userId = req.user.id;
 
-    const invoice = await prisma.invoice.findUnique({
+    const invoice = await prisma.invoice.findFirst({
       where: {
         id: idNumber,
+        // userId: userId, 
       },
     });
 
@@ -47,13 +50,12 @@ export const singleInvoice = async (req: Request, res: Response) => {
       return res.status(404).json({ message: "Invoice not found" });
     }
 
-    //  success response
-    res.status(200).json({
+    return res.status(200).json({
       message: "Invoice fetched successfully",
       data: invoice,
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Something went wrong" });
+    return res.status(500).json({ message: "Something went wrong" });
   }
 };
