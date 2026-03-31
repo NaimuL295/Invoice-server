@@ -42,8 +42,14 @@ export const singleInvoice = async (req: any, res: Response) => {
     const invoice = await prisma.invoice.findFirst({
       where: {
         id: idNumber,
+     
         // userId: userId, 
+        
       },
+      include:{
+        user:true,
+        items:true
+      }
     });
 
     if (!invoice) {
