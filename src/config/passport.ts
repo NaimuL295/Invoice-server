@@ -84,14 +84,47 @@ passport.use(
   )
 );
 
+// 
+
+
+// passport.serializeUser((user: any, done) => {
+//   // Passport saves this ID into the session
+//   done(null, user.id); 
+// });
+
+// passport.deserializeUser(async (id: any, done) => {
+//   try {
+//     // Convert the ID to a Number specifically for Prisma Int types
+//     const userId = typeof id === "string" ? parseInt(id, 10) : id;
+
+//     const user = await prisma.user.findUnique({
+//       where: { id: userId },
+//     });
+
+//     if (!user) return done(null, false);
+
+//     done(null, user);
+//   } catch (error) {
+//     done(error);
+//   }
+// });
+
+
+
+
+
 passport.serializeUser((user: any, done) => {
-  done(null, user.id);
+  // Passport saves this ID into the session
+  done(null, user.id); 
 });
 
-passport.deserializeUser(async (id: number, done) => {
+passport.deserializeUser(async (id: any, done) => {
   try {
+    // Convert the ID to a Number specifically for Prisma Int types
+    const userId = typeof id === "string" ? parseInt(id, 10) : id;
+
     const user = await prisma.user.findUnique({
-      where: { id },
+      where: { id: userId },
     });
 
     if (!user) return done(null, false);

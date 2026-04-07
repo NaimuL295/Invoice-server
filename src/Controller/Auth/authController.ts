@@ -1,4 +1,4 @@
-
+ import "dotenv/config"
 import { Request, Response } from "express";
 import { generateToken } from "../../utils/jwt";
 import { prisma } from "../../lib/prisma";
@@ -52,7 +52,7 @@ export const register = async (req: Request, res: Response) => {
       data: { user_name, email, password: hashedPassword },
     });
 
-    // 🔥 SAME AS LOGIN
+    //  SAME AS LOGIN
     const token = generateToken(user.id);
 
     res.cookie("token", token, {
@@ -99,13 +99,13 @@ export const googleCallback = (req: any, res: Response) => {
     sameSite: "lax",
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
- console.log("AFTER LOGIN USER:", req.user); //  check
+//  console.log("AFTER LOGIN USER:", req.user); //  check
   res.redirect("http://localhost:5173/"); // Frontend route
 };
 
 // Current user
 export const getMe = (req: any, res: Response) => {
-  console.log("REQ.USER:", req.user); //  add this
+ //  console.log("REQ.USER:", req.user); //  add this
   res.json(req.user || null);
 };
 
@@ -127,6 +127,7 @@ export const logout = (req: any, res: Response) => {
 
     req.session.destroy(() => {
       res.clearCookie("connect.sid"); //  important
+       res.clearCookie("token"); //  important
       res.json({ message: "Logout success" });
     });
   });
