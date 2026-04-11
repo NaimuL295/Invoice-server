@@ -34,8 +34,8 @@ async function startServer() {
     app.use(session({
         store: new RedisStore({ client: redisClient, prefix: "sess:" }),
         secret: process.env.SECRET_KEY || "secret",
-        resave: false, // Changed to false (better practice with Redis)
-        saveUninitialized: false, // Changed to false (prevents empty sessions)
+        resave: false,
+        saveUninitialized: false,
         cookie: {
             secure: isProduction,
             httpOnly: true,

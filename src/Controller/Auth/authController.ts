@@ -67,7 +67,7 @@ export const googleCallback = (req: any, res: Response) => {
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
  // console.log("AFTER LOGIN USER:", req.user); //  check
-  res.redirect("http://localhost:5173/"); // Frontend route
+res.redirect(`${process.env.FRONTEND_START as string}`);
 };
 
 // Current user
