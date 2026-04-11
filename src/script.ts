@@ -57,24 +57,26 @@ const redisClient = createClient({
 redisClient.on("error", (err) => console.log("Redis Client Error", err));
 
 async function startServer() {
-  await redisClient.connect();
-  // console.log("✅ Redis connected");
+ await redisClient.connect();
+    console.log("✅ Redis connected");
 
-  app.use(
-    session({
-      store: new RedisStore({ client: redisClient, prefix: "sess:" }),
-      secret: process.env.SECRET_KEY || "secret",
-      resave: true,
-      saveUninitialized: true,
-      cookie: {
-        secure: false,
-        httpOnly: true,
-        sameSite: "lax",
-        maxAge: 1000 * 60 * 60 * 24 * 7,
-      },
-    }),
-  );
+const isProduction = process.env.NODE_ENV === "production";
 
+app.use(
+  session({
+    store: new RedisStore({ client: redisClient, prefix: "sess:" }),
+    secret: process.env.SECRET_KEY || "secret",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: isProduction, 
+      httpOnly: true,
+      sameSite: isProduction ? "none" : "lax", 
+      maxAge: 1000 * 60 * 60 * 24 * 7,
+    
+    },
+  })
+);
   app.use(passport.initialize());
   app.use(passport.session());
 

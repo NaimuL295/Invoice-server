@@ -29,16 +29,17 @@ const redisClient = createClient({
 redisClient.on("error", (err) => console.log("Redis Client Error", err));
 async function startServer() {
     await redisClient.connect();
-    // console.log("✅ Redis connected");
+    console.log("✅ Redis connected");
+    const isProduction = process.env.NODE_ENV === "production";
     app.use(session({
         store: new RedisStore({ client: redisClient, prefix: "sess:" }),
         secret: process.env.SECRET_KEY || "secret",
-        resave: true,
-        saveUninitialized: true,
+        resave: false, // Changed to false (better practice with Redis)
+        saveUninitialized: false, // Changed to false (prevents empty sessions)
         cookie: {
-            secure: false,
+            secure: isProduction,
             httpOnly: true,
-            sameSite: "lax",
+            sameSite: isProduction ? "none" : "lax",
             maxAge: 1000 * 60 * 60 * 24 * 7,
         },
     }));
