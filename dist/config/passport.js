@@ -2,7 +2,7 @@ import "dotenv/config";
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
-import { prisma } from "../lib/prisma";
+import { prisma } from "../lib/prisma.js";
 import bcryptjs from "bcryptjs";
 passport.use(new LocalStrategy({
     usernameField: "email",

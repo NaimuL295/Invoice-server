@@ -1,6 +1,6 @@
 import "dotenv/config";
-import { generateToken } from "../../utils/jwt";
-import { prisma } from "../../lib/prisma";
+import { generateToken } from "../../utils/jwt.js";
+import { prisma } from "../../lib/prisma.js";
 import bcrypt from "bcryptjs";
 export const register = async (req, res) => {
     try {

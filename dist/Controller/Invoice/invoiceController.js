@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { prisma } from "../../lib/prisma";
+import { prisma } from "../../lib/prisma.js";
 export const createInvoice = async (req, res) => {
     try {
         const { uid, userId, date, customer, items, subtotal, total, discount, received, due, paymentType, description, } = req.body;

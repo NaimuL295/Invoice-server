@@ -10,7 +10,7 @@ import { getMe, getProfile, googleCallback, localLogin, logout, register, } from
 import { createInvoice, deleteData, modifyInvoice, singleInvoice, userInvoice, } from "./Controller/Invoice/invoiceController.js";
 import { getPrintSettings, updatePrintSettings, } from "./Controller/PrintSettings/PrintSettingsController.js";
 const app = express();
-const port = process.env.PORT || 5000;
+const port = Number(process.env.PORT) || 5000;
 app.set("trust proxy", 1);
 app.use(cors({
     origin: [
@@ -65,6 +65,8 @@ async function startServer() {
     // print settings
     app.get("/api/print-settings", getPrintSettings);
     app.patch("/api/print-settings", updatePrintSettings);
-    app.listen(port, () => console.log(`🚀 Server running on ${port}`));
+    app.listen(port, '0.0.0.0', () => {
+        console.log(`🚀 Server running on ${port}`);
+    });
 }
 startServer();

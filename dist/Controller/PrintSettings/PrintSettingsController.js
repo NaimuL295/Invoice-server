@@ -1,4 +1,4 @@
-import { prisma } from "../../lib/prisma";
+import { prisma } from "../../lib/prisma.js";
 export const getPrintSettings = async (req, res) => {
     try {
         const userId = Number(req.query.userId);

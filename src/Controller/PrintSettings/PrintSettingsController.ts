@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { prisma } from "../../lib/prisma";
-import { log } from "console";
+import { prisma } from "../../lib/prisma.js";
+
 
 // Define the shape of the update request body
 interface UpdateLayoutRequest {
@@ -10,11 +10,10 @@ interface UpdateLayoutRequest {
 export const getPrintSettings = async (req: Request, res: Response) => {
   try {
     const userId = Number(req.query.userId);
-    log(userId)
+    // log(userId)
     if (!userId || isNaN(userId)) {
       return res.status(400).json({ message: "Valid User ID is required" });
     }
-
     const user = await prisma.user.findUnique({
       where: { id: userId },
       select: { printLayout: true },

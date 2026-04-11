@@ -1,9 +1,9 @@
-import "dotenv/config"
+import "dotenv/config";
 
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
-import { prisma } from "../lib/prisma";
+import { prisma } from "../lib/prisma.js";
 import bcryptjs from "bcryptjs";
 
 passport.use(
@@ -34,10 +34,9 @@ passport.use(
       } catch (error) {
         return done(error);
       }
-    }
-  )
+    },
+  ),
 );
-
 
 passport.use(
   new GoogleStrategy(
@@ -80,51 +79,19 @@ passport.use(
       } catch (error) {
         return done(error);
       }
-    }
-  )
+    },
+  ),
 );
 
-// 
-
-
-// passport.serializeUser((user: any, done) => {
-//   // Passport saves this ID into the session
-//   done(null, user.id); 
-// });
-
-// passport.deserializeUser(async (id: any, done) => {
-//   try {
-//     // Convert the ID to a Number specifically for Prisma Int types
-//     const userId = typeof id === "string" ? parseInt(id, 10) : id;
-
-//     const user = await prisma.user.findUnique({
-//       where: { id: userId },
-//     });
-
-//     if (!user) return done(null, false);
-
-//     done(null, user);
-//   } catch (error) {
-//     done(error);
-//   }
-// });
-
-
-
-
-
 passport.serializeUser((user: any, done) => {
-  // Passport saves this ID into the session
-  done(null, user.id); 
+  done(null, user.id);
 });
 
-passport.deserializeUser(async (id: any, done) => {
+passport.deserializeUser(async (id: number, done) => {
+  // console.log("Checking session for ID:", id);
   try {
-    // Convert the ID to a Number specifically for Prisma Int types
-    const userId = typeof id === "string" ? parseInt(id, 10) : id;
-
     const user = await prisma.user.findUnique({
-      where: { id: userId },
+      where: {id: Number(id)},
     });
 
     if (!user) return done(null, false);
@@ -134,4 +101,4 @@ passport.deserializeUser(async (id: any, done) => {
     done(error);
   }
 });
-export default passport ;
+export default passport;

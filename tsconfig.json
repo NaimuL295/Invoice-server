@@ -1,11 +1,19 @@
 {
   "compilerOptions": {
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "target": "ES2023",
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "rootDir": "./src",
+    "outDir": "./dist",
     "strict": true,
     "esModuleInterop": true,
-    "ignoreDeprecations": "5.0",
+    "skipLibCheck": true,
+    "types": ["node"],
+    "allowSyntheticDefaultImports": true
   },
-   "include": ["src"]
+  "include": [
+    "src/**/*",
+    "src/generated/prisma"  // Ensure TS includes generated Prisma client
+  ],
+  "exclude": ["node_modules", "dist"]
 }

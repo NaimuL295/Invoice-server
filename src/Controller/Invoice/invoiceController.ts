@@ -1,8 +1,8 @@
 import "dotenv/config"
 import { Response, Request } from "express";
-import { prisma } from "../../lib/prisma";
-import { CreateInvoiceRequest } from "../../type";
-import { log } from "console";
+import { prisma } from "../../lib/prisma.js";
+import { CreateInvoiceRequest } from "../../type.js";
+
 
 type TypedRequest<T> = Request<{}, {}, T>;
 
